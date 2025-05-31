@@ -65,7 +65,8 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        $categories = Category::orderBy('name', 'asc')->get();
+        return view('admin.posts.edit', compact('post', 'categories'));
     }
 
     /**
@@ -73,7 +74,29 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $data = $request->validate([
+            'title' => 'required',
+            'slug' => 'required|unique:posts,slug,' . $post->id,
+            'category_id' => 'required|exists:categories,id',
+            'excerpt' => 'nullable',
+            'content' => 'nullable',
+            'is_published' => 'nullable'
+        ]);
+
+        if (isset($data['is_published']))
+            $data['is_published'] = 1;
+        else
+            $data['is_published'] = 0;
+
+        $post->update($data);
+
+        session()->flash('swal', [
+            'icon' => 'success',
+            'title' => "Updated!",
+            'text' => "Your post has been updated."
+        ]);
+
+        return redirect()->route('admin.posts.show', $post);
     }
 
     /**
