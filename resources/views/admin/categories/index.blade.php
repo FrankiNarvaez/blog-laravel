@@ -36,7 +36,7 @@
                             {{ $category->name }}
                         </td>
                         <td class="px-6 py-4">
-                            <a href="{{route('admin.categories.create') }}" class="btn btn-alt">Edit</a>
+                            <a href="{{route('admin.categories.edit', $category) }}" class="btn btn-alt">Edit</a>
                             <a href="{{route('admin.categories.create') }}" class="btn btn-red">Remove</a>
                         </td>
                     </tr>
