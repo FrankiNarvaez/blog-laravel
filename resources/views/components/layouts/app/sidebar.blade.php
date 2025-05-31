@@ -8,11 +8,17 @@
                 'current' => request()->routeIs('dashboard'),
             ],
             [
+                'name' => 'Posts',
+                'icon' => 'newspaper',
+                'url' => route('admin.posts.index'),
+                'current' => request()->routeIs('admin.posts.*'),
+            ],
+            [
                 'name' => 'Categories',
                 'icon' => 'funnel',
                 'url' => route('admin.categories.index'),
                 'current' => request()->routeIs('admin.categories.*'),
-            ]
+            ],
         ],
     ];
 @endphp
