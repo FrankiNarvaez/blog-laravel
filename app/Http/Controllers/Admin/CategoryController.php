@@ -38,8 +38,8 @@ class CategoryController extends Controller
 
         session()->flash('swal', [
             'icon' => 'success',
-            'title' => "It's done",
-            'text' => "Category '$category->name' created!"
+            'title' => "Created!",
+            'text' => "Your category has been created."
         ]);
 
         return redirect()->route('admin.categories.index');
@@ -74,8 +74,8 @@ class CategoryController extends Controller
 
         session()->flash('swal', [
             'icon' => 'success',
-            'title' => "It's done",
-            'text' => "Category '$category->name' updated!"
+            'title' => "Updated!",
+            'text' => "Your category has been updated!"
         ]);
 
         return redirect()->route('admin.categories.index');
@@ -86,6 +86,14 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+
+        session()->flash('swal', [
+            'icon' => 'success',
+            'title' => "Deleted!",
+            'text' => "Your category has been deleted."
+        ]);
+
+        return redirect()->route('admin.categories.index');
     }
 }

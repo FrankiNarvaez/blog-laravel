@@ -21,7 +21,7 @@
                     <th scope="col" class="px-6 py-3">
                         Name
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="px-6 py-3" width="10px">
                         Actions
                     </th>
                 </tr>
@@ -36,12 +36,46 @@
                             {{ $category->name }}
                         </td>
                         <td class="px-6 py-4">
-                            <a href="{{route('admin.categories.edit', $category) }}" class="btn btn-alt">Edit</a>
-                            <a href="{{route('admin.categories.create') }}" class="btn btn-red">Remove</a>
+                            <div class="flex">
+                                <a href="{{route('admin.categories.edit', $category) }}" class="btn btn-alt">Edit</a>
+                                <form class="delete-form" action="{{ route('admin.categories.destroy', $category) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <button type="submit" class="btn btn-red">Remove</button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
+
+    @push('js')
+        <script>
+            const forms = document.querySelectorAll('.delete-form');
+
+            // event
+            forms.forEach(form => {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+
+                    Swal.fire({
+                        title: "Are you sure?",
+                        text: "You won't be able to revert this!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Yes, delete it!"
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                    });
+                });
+            });
+        </script>
+    @endpush
 </x-layouts.app>
