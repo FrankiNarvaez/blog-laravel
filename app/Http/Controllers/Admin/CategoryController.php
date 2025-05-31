@@ -34,7 +34,7 @@ class CategoryController extends Controller
             'name' => 'required|string|min:4|max:255',
         ]);
 
-        $category = Category::create($data);
+        Category::create($data);
 
         session()->flash('swal', [
             'icon' => 'success',
