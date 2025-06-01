@@ -1,4 +1,8 @@
 <x-layouts.app>
+    @push('css')
+        <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+    @endpush
+
     <div class="flex justify-between items-center">
         <flux:breadcrumbs>
             <flux:breadcrumbs.item :href="route('dashboard')">
@@ -54,9 +58,11 @@
                 {{ old('excerpt', $post->excerpt) }}
             </flux:textarea>
 
-            <flux:textarea label="Content" name="content">
-                {{ old('content', $post->content) }}
-            </flux:textarea>
+            <div class="mb-16">
+                <p class="font-medium text-sm mb-1">Content</p>
+                <div id="editor">{!! old('content', $post->content) !!}</div>
+                <textarea name="content" id="content" class="hidden">{{ old('content', $post->content) }}</textarea>
+            </div>
 
             <flux:select label="Category" name="category_id" placeholder="Choose category...">
                 @foreach ($categories as $category)
@@ -83,6 +89,20 @@
             </div>
         </form>
     </div>
+
+@push('js')
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+
+    <script>
+        const quill = new Quill('#editor', {
+            theme: 'snow'
+        });
+
+        quill.on('text-change', () => {
+            document.querySelector('#content').value = quill.root.innerHTML;
+        });
+    </script>
+@endpush
 </x-layouts.app>
 
 
