@@ -89,10 +89,10 @@ class PostController extends Controller
             'tags.*' => 'exists:tags,id',
         ]);
 
-        if (isset($data['is_published']))
-            $data['is_published'] = 1;
+        if ($request->is_published)
+            $data['is_published'] = true;
         else
-            $data['is_published'] = 0;
+            $data['is_published'] = false;
 
         if ($request->hasFile('image')) {
             if ($post->image_path)
