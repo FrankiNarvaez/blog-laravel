@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -80,13 +81,21 @@ class PostController extends Controller
             'category_id' => 'required|exists:categories,id',
             'excerpt' => 'nullable',
             'content' => 'nullable',
-            'is_published' => 'nullable'
+            'is_published' => 'nullable',
+            'image' => 'nullable|image',
         ]);
 
         if (isset($data['is_published']))
             $data['is_published'] = 1;
         else
             $data['is_published'] = 0;
+
+        if ($request->hasFile('image')) {
+            if ($post->image_path)
+                Storage::delete($post->image_path);
+
+            $data['image_path'] = Storage::put('posts', $request->image);
+        }
 
         $post->update($data);
 

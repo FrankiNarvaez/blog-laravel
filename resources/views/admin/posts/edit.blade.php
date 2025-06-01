@@ -14,10 +14,22 @@
         <a href="{{route('admin.posts.index') }}" class="btn btn-blue">Go back</a>
     </div>
 
-    <div class="flex flex-col gap-6 h-full max-w-sm mx-auto">
-        <form action="{{ route('admin.posts.update', $post) }}" method="POST" class="flex flex-col gap-6 justify-center h-full">
+    <div class="flex flex-col gap-6 h-full max-w-4xl mx-auto">
+        <form action="{{ route('admin.posts.update', $post) }}" method="POST" class="flex flex-col gap-6 justify-center h-full" enctype="multipart/form-data" >
             @csrf
             @method('PUT')
+
+            <div class="relative">
+                <img
+                    class="aspect-video object-cover content-center"
+                    src="{{ $post->image_path ? Storage::url($post->image_path) : 'https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png' }}"
+                    id="image-preview"
+                >
+                <label class="btn btn-alt absolute right-4 top-4">
+                    Select an image
+                    <input type="file" name="image" class="hidden" accept="image/*" onchange="previewImage(event, '#image-preview')" >
+                </label>
+            </div>
 
             <flux:input
                 label="Title"
@@ -61,39 +73,10 @@
             </flux:select>
 
             <div class="flex items-center justify-end">
-                <flux:button variant="primary" type="submit" class="w-full">Create</flux:button>
+                <flux:button variant="primary" type="submit">Create</flux:button>
             </div>
         </form>
     </div>
-
-    @push('js')
-        <script>
-            function string_to_slug(str, querySelector){
-                // Eliminar espacios al inicio y final
-                str = str.replace(/^\s+|\s+$/g, '');
-
-                // Convertir todo a minúsculas
-                str = str.toLowerCase();
-
-                // Definir caracteres especiales y sus reemplazos
-                var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
-                var to = "aaaaeeeeiiiioooouuuunc------";
-
-                // Reemplazar caracteres especiales por los correspondientes en 'to'
-                for (var i = 0, l = from.length; i < l; i++) {
-                    str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
-                }
-
-                // Eliminar caracteres no alfanuméricos y reemplazar espacios por guiones
-                str = str.replace(/[^a-z0-9 -]/g, '')
-                    .replace(/\s+/g, '-')
-                    .replace(/-+/g, '-');
-
-                // Asignar el slug generado al campo de entrada correspondiente
-                document.querySelector(querySelector).value = str;
-            }
-        </script>
-    @endpush
 </x-layouts.app>
 
 
