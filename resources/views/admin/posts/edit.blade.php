@@ -58,6 +58,18 @@
                 {{ old('content', $post->content) }}
             </flux:textarea>
 
+            <flux:select label="Category" name="category_id" placeholder="Choose category...">
+                @foreach ($categories as $category)
+                    <flux:select.option :value="$category->id" :selected="$category->id == old('category_id', $post->category_id)">{{ $category->name }}</flux:select.option>
+                @endforeach
+            </flux:select>
+
+            <flux:checkbox.group wire:model="notifications" label="Tags">
+                @foreach ($tags as $tag)
+                    <flux:checkbox :label="$tag->name" name="tags[]" :value="$tag->id" :checked="old('tags[]', in_array($tag->id, $post->tags->pluck('id')->toArray())) == 1" />
+                @endforeach
+            </flux:checkbox.group>
+
             <flux:field variant="inline">
                 <flux:checkbox name="is_published" :checked="old('is_published', $post->is_published) == 1" />
 
@@ -65,12 +77,6 @@
 
                 <flux:error name="terms" />
             </flux:field>
-
-            <flux:select label="Category" name="category_id" placeholder="Choose category...">
-                @foreach ($categories as $category)
-                    <flux:select.option :value="$category->id" :selected="$category->id == old('category_id', $post->category_id)">{{ $category->name }}</flux:select.option>
-                @endforeach
-            </flux:select>
 
             <div class="flex items-center justify-end">
                 <flux:button variant="primary" type="submit">Create</flux:button>
