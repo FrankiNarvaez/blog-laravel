@@ -19,6 +19,12 @@
                 'url' => route('admin.categories.index'),
                 'current' => request()->routeIs('admin.categories.*'),
             ],
+            [
+                'name' => 'Tags',
+                'icon' => 'tag',
+                'url' => route('admin.tags.index'),
+                'current' => request()->routeIs('admin.tags.*'),
+            ],
         ],
     ];
 @endphp
