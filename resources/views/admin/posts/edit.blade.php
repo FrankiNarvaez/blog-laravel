@@ -26,7 +26,7 @@
             <div class="relative">
                 <img
                     class="aspect-video object-cover content-center"
-                    src="{{ $post->image_path ? Storage::url($post->image_path) : 'https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png' }}"
+                    src="{{ $post->image }}"
                     id="image-preview"
                 >
                 <label class="btn btn-alt absolute right-4 top-4">
